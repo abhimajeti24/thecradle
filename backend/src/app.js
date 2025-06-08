@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from 'cors';
 import helmet from 'helmet';
 import connectDB from './config/db.js';
+import galleryRoutes from "../src/routes/gallery.routes.js";
 
 dotenv.config();
 
@@ -29,6 +30,8 @@ app.use(express.urlencoded({ extended: true, limit: '10mb'}));
 app.get("/",(req,res) => {
   res.status(200).send("Server is UP...");
 });
+
+app.use("/api/gallery", galleryRoutes);
 
 
 export default app;
