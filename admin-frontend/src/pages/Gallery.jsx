@@ -3,7 +3,6 @@ import {useState} from "react";
 import toast from "react-hot-toast";
 
 const Gallery = () => {
-  console.log("Gallery component is rendering");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -27,24 +26,6 @@ const Gallery = () => {
     }
   };
 
-  const deleteImage = async (imageId) => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/gallery/${imageId}`, {
-        method: 'DELETE',
-      });
-      
-      if (!response.ok) {
-        throw new Error("Failed to delete image");
-      }
-      
-      setImages(images.filter(image => image._id !== imageId));
-      toast.success("Image deleted successfully");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to delete image");
-    }
-  };
-  
   useEffect(() => {
     getAllImages();
   }, [])
@@ -56,9 +37,9 @@ const Gallery = () => {
       ) : images.length === 0 ? (
         <p>No images found</p>
       ) : (
-        <div>
+        <div className="image-container">
           {images.map((image) => (
-            <div key={image._id} >
+            <div key={image._id} className="image-card">
               <img 
                 src={image.url} 
                 alt={image.title} 
@@ -69,13 +50,13 @@ const Gallery = () => {
               <small>
                 {new Date(image.createdAt).toLocaleDateString()}
               </small>
-                        <button>delete</button>
 
             </div>
           ))}
+
         </div>
       )}
-  </>
+  </>;
 };
 
 export default Gallery;

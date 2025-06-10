@@ -18,12 +18,15 @@ export const uploadImage = async (req, res) => {
 
     res.status(201).json(newImage);
   } catch (error) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
 export const getAllImages = async (req, res) => {
   const images = await Image.find().sort({ createdAt: -1 });
+  if(!images){
+    return res.status(404).json({ message: "No images found"});
+  }
   res.status(200).json(images);
 };
 

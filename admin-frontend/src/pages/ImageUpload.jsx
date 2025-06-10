@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { uploadImage } from '../services/api';
+import FileUpload from '../components/FileUpload';
+import toast  from 'react-hot-toast';
 
-export default function GalleryUpload() {
+const ImageUpload = () => {
+
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [event, setEvent] = useState('');
@@ -9,7 +11,10 @@ export default function GalleryUpload() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!file) return alert('Select an image');
+    if (!file){
+      toast.error("Please select an image");
+      return;
+    }
 
     const formData = new FormData();
     formData.append('image', file);
@@ -18,21 +23,29 @@ export default function GalleryUpload() {
 
     try {
       setLoading(true);
-      const res = await uploadImage(formData);
-      alert('Uploaded!');
-      console.log(res);
+      const response = await fetch('http://localhost:5000/api/gallery/upload', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+      const result = await response.json();
+      toast.success('Uploaded!');
       setFile(null);
       setTitle('');
       setEvent('');
     } catch (err) {
       console.error(err);
-      alert('Upload failed');
+      toast.error('Upload failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
+    <div>
     <form onSubmit={handleSubmit}>
       <h2>Upload Image to Gallery</h2>
       <input
@@ -56,5 +69,9 @@ export default function GalleryUpload() {
         {loading ? 'Uploading...' : 'Upload'}
       </button>
     </form>
+    <FileUpload />  
+    </div>
   );
 }
+
+export default ImageUpload;
