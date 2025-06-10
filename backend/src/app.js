@@ -3,7 +3,9 @@ import dotenv from "dotenv";
 import cors from 'cors';
 import helmet from 'helmet';
 import connectDB from './config/db.js';
+
 import galleryRoutes from "../src/routes/gallery.routes.js";
+import visitorRoutes from "../src/routes/visitor.routes.js";
 
 dotenv.config();
 
@@ -32,6 +34,7 @@ app.get("/",(req,res) => {
 });
 
 app.use("/api/gallery", galleryRoutes);
+app.use("/api/visitors", visitorRoutes);
 
 
 export default app;
