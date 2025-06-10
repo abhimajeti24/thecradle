@@ -31,13 +31,13 @@ export const getAllImages = async (req, res) => {
 };
 
 export const deleteImage = async (req, res) => {
-  const { id } = req.params;
+  const { imageId } = req.params;
 
-  const image = await Image.findById(id);
+  const image = await Image.findById(imageId);
   if (!image) return res.status(404).json({ message: "Image not found" });
 
   await cloudinary.uploader.destroy(image.publicId);
-  await Image.findByIdAndDelete(id);
+  await Image.findByIdAndDelete(imageId);
 
   res.status(200).json({ message: "Image deleted" });
 };

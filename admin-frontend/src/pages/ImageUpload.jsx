@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import FileUpload from '../components/FileUpload';
 import toast  from 'react-hot-toast';
+import { Link } from "react-router-dom";
 
 const ImageUpload = () => {
 
@@ -31,7 +32,7 @@ const ImageUpload = () => {
       if (!response.ok) {
         throw new Error('Upload failed');
       }
-      const result = await response.json();
+      // const result = await response.json(); may be not required
       toast.success('Uploaded!');
       setFile(null);
       setTitle('');
@@ -46,6 +47,8 @@ const ImageUpload = () => {
 
   return (
     <div>
+      <Link to="/">Dashboard</Link>
+      <Link to="/gallery">Gallery</Link>
     <form onSubmit={handleSubmit}>
       <h2>Upload Image to Gallery</h2>
       <input
