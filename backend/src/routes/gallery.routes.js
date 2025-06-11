@@ -1,11 +1,29 @@
+// routes/gallery.routes.js
 import express from "express";
 import upload from "../utils/multer.js";
-import { uploadImage, getAllImages, deleteImage } from "../controllers/gallery.controllers.js";
+import { 
+  uploadImages, 
+  getAllImages, 
+  deleteImage,
+  getGalleryById,
+  deleteSingleImage
+} from "../controllers/gallery.controllers.js";
 
 const router = express.Router();
 
-router.post("/upload", upload.single('image'), uploadImage);
+// Upload images (creates new gallery document)
+router.post("/upload", upload.array('images'), uploadImages);
+
+// Get all galleries
 router.get("/", getAllImages);
-router.delete("/:imageId", deleteImage);
+
+// Get specific gallery by ID
+router.get("/:documentId", getGalleryById);
+
+// Delete entire gallery (all images under one title/event)
+router.delete("/:documentId", deleteImage);
+
+// Optional: Delete single image from gallery
+router.delete("/:documentId/image/:imageId", deleteSingleImage);
 
 export default router;
